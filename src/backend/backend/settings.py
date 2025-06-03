@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure--kk!dw&u($^eq!1+8sziay7)mr-q-xzo01ep@)i^6c&u2w$9z=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'oauth2_provider',
+    
+    'backend.base',
 ]
 
 MIDDLEWARE = [
@@ -84,15 +86,22 @@ OAUTH2_PROVIDER = {
     "RESOURCE_SERVER_INTROSPECTION_CREDENTIALS": ("client_id", "client_secret"),
 }
 
+AUTH_USER_MODEL = 'base.User'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'oauth2_provider.contrib.rest_framework.OAuth2Authentication'
+        'rest_framework.authentication.TokenAuthentication'
     ),
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
     ),
 }
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': [
+#         'rest_framework.authentication.TokenAuthentication',
+#     ]
+# }
+
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
@@ -169,6 +178,6 @@ EBARIMT_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlNzkxMjNjOS02Mj
 EBARIMT_URL = "http://oes.shunkhlai.mn:8011"
 LOYALTY_URL = "http://103.168.179.5:8092"
 MERCHANT_URL = "http://info.ebarimt.mn"
-SERVER_URL = "http://testsvr.shunkhlai.mn:8073"
+GUUR_URL = "http://testsvr.shunkhlai.mn:8073"
 VERSION_URL = "http://192.168.1.165:9000/update_info.json"
 

@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from backend.views import *
+from backend.middleware.guur import *
 from oauth2_provider import views
 
 urlpatterns = [
@@ -26,6 +27,7 @@ urlpatterns = [
 
     path('ping/', ping),
     path('admin/', admin.site.urls),
+    path('guur/auth/token/', guurAuthToken),
 
-    path("merchant_tin", ebarimtMerchantTin)
+    path("merchant_tin/", ebarimtMerchantTin)
 ]
