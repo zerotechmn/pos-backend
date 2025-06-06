@@ -1,0 +1,53 @@
+{% extends "master_front.html" %}
+
+{% block title %}
+Нэвтрэх
+{% endblock title %}
+
+{% block body_class %}
+login
+{% endblock body_class %}
+
+{% block js %}
+<script type="text/javascript">
+$('#login').validate();
+</script>
+{% endblock js %}
+
+{% block css %}
+{{block.super}}
+<link href="{{STATIC_URL}}base/css/login.css" rel="stylesheet" type="text/css"/>
+{% endblock css %}
+{% block content %}
+<div class="user-login">
+    <div class="row bs-reset">
+        <div class="col-ld-6 col-md-6 col-sm-12 col-xs-12 login-container bs-reset mt-login-5-bsfix">
+            <div class="login-content">
+                <h1>DATABANK MANAGE</h1>
+                <form action="" method="post" id="login" class="login-form">{% csrf_token %}
+                    {{form.errors}}
+                    {% if form.errors %}
+                        <div class="alert alert-danger text-center alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss="alert"></button>
+                            <span>Имэйл хаяг эсвэл нууц үг тохирохгүй байна.</span>
+                        </div>
+                    {% endif %}
+                    <div class="row fields">
+                        <div class="col-xs-4">
+                            {{form.username}}
+                        </div>
+                        <div class="col-xs-4">
+                            {{form.password}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <button class="btn green" type="submit">Нэвтрэх</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

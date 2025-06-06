@@ -17,8 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from views.auth_view import FrontLoginView
-from views.auth_view import FrontLogoutView
+from front.views.auth_view import FrontLoginView
+from front.views.auth_view import FrontLogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
