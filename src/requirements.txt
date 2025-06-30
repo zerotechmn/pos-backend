@@ -16,3 +16,4 @@ jwcrypto==1.5.6
 oauthlib==3.2.2
 pycparser==2.22
 typing_extensions==4.13.2
+django-oauth-toolkit
