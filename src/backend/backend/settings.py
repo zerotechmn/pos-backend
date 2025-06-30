@@ -172,11 +172,11 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 API_EBARIMT_URL = "http://api.ebarimt.mn"
 B2B_URL = "https://b2b-indol.vercel.app"
-B2C_URL = "http://103.168.179.39:8080"
+B2C_URL = "https://orange-api.shunkhlai.mn"
 EBARIMT_30_URL = "http://103.168.179.44:3000"
 EBARIMT_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlNzkxMjNjOS02MjU3LTQ2OTEtOWVmOS04MDE2MTExNGYzOTYiLCJuYW1lIjoiT25saW5lIFBPUyIsImF1ZCI6InBvcyIsImlhdCI6MTc0NTMwOTAwOCwiZXhwIjoyNzQ1MzEyNjA4fQ.OcrZMlAR1DdJXjfuFTF89mM0VUBBOKGFd9_wL-1UQIw"
 EBARIMT_URL = "http://oes.shunkhlai.mn:8011"
-LOYALTY_URL = "http://103.168.179.5:8092"
+LOYALTY_URL = "https://lms.shunkhlai.mn"
 MERCHANT_URL = "http://info.ebarimt.mn"
 GUUR_URL = "http://testsvr.shunkhlai.mn:8073"
 VERSION_URL = "http://192.168.1.165:9000/update_info.json"
