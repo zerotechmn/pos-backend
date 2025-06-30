@@ -4,12 +4,11 @@ MAINTAINER Uuganbayar <uuganbayar@zerotech>
 
 WORKDIR /app
 
-COPY requirements.txt .
+COPY src/requirements.txt /app
+
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
-
-RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000
 
