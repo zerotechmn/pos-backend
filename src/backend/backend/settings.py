@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -113,12 +114,12 @@ DATABASES = {
         'OPTIONS': {
             'options': '-c search_path=django,public',
         },
-        'NAME': "zerotech",
-        'USER': "zerotech",
-        'PASSWORD': "postgres",
-        'HOST': "localhost",
-        'CONN_MAX_AGE': 60,
-        'PORT': 5432
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DB_NAME', 'zerotech'),
+        'USER': os.environ.get('DB_USER', 'zerotech'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', 'postgres'),
+        'HOST': os.environ.get('DB_HOST', 'db'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
 
