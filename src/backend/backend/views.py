@@ -9,10 +9,11 @@ from django.http import JsonResponse
 def ping(request):
     return Response({"message": "Hello from Backend API"})
 
+
 @api_view(['GET'])
 def ebarimtMerchantTin(request):
     regno = request.data.get("regno")
-    if regno in [None, ""]: 
+    if regno in [None, ""]:
         return Response("")
     
     url = "https://api.ebarimt.mn/api/info/check/getTinInfo"
