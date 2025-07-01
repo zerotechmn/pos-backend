@@ -29,5 +29,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('guur/auth/token/', guurAuthToken),
 
-    path("merchant_tin/", ebarimtMerchantTin)
+    path("merchant_tin/", ebarimtMerchantTin),
+    path('update_info.json', update_info),
 ]

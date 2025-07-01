@@ -1,6 +1,7 @@
 import requests
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.response import Response
+from django.http import JsonResponse
 
 @api_view(['GET'])
 @authentication_classes([])
@@ -22,3 +23,12 @@ def ebarimtMerchantTin(request):
     response = requests.get(url, headers=headers, data=data)
 
     return Response(response.json())
+
+
+def update_info(request):
+    data = {
+        "version": "1.0.1",
+        "description": "Update available",
+        "url": "http://192.168.1.165:8080/app-debug.apk"
+    }
+    return JsonResponse(data)
