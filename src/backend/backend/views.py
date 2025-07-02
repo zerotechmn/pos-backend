@@ -11,6 +11,7 @@ def ping(request):
 
 
 @api_view(['GET'])
+@authentication_classes([])
 def ebarimtMerchantTin(request):
     regno = request.data.get("regno")
     if regno in [None, ""]:
@@ -30,6 +31,6 @@ def update_info(request):
     data = {
         "version": "1.0.1",
         "description": "Update available",
-        "url": "http://192.168.1.165:8080/app-debug.apk"
+        "url": "http://192.168.1.145:8080/shared/test/app-debug.apk"
     }
     return JsonResponse(data)
