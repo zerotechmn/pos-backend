@@ -34,7 +34,7 @@ services:
     environment:
       - discovery.type=single-node
       - xpack.security.enabled=false
-      - ES_JAVA_OPTS=-XX:+UseSerialGC -Des.disable_configured_cgroups=true
+      - ES_JAVA_OPTS=-Des.disable_configured_cgroups=true
     ports:
       - "9200:9200"
     volumes:

@@ -36,6 +36,6 @@ def update_info(request):
     data = {
         "version": "1.0.1",
         "description": "Update available",
-        "url": "http://192.168.1.145:80/shared/test/app-debug.apk"
+        "url": "http://192.168.1.88:80/shared/test/app-debug.apk"
     }
     return JsonResponse(data)
