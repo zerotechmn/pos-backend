@@ -1,7 +1,10 @@
+import logging
 import requests
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.response import Response
 from django.http import JsonResponse
+
+logger = logging.getLogger('django')
 
 @api_view(['GET'])
 @authentication_classes([])
@@ -11,8 +14,10 @@ def ping(request):
 
 
 @api_view(['GET'])
+@authentication_classes([])
 def ebarimtMerchantTin(request):
-    regno = request.data.get("regno")
+    logger.info(f"RequestData : {request.query_params}")
+    regno = request.query_params.get("regno")
     if regno in [None, ""]:
         return Response("")
     
@@ -22,6 +27,7 @@ def ebarimtMerchantTin(request):
         "regNo": regno
     }
     response = requests.get(url, headers=headers, data=data)
+    logger.info(f"Response : {response.json()}")
 
     return Response(response.json())
 
@@ -30,6 +36,6 @@ def update_info(request):
     data = {
         "version": "1.0.1",
         "description": "Update available",
-        "url": "http://192.168.1.165:8080/app-debug.apk"
+        "url": "http://192.168.1.88:80/shared/test/app-debug.apk"
     }
     return JsonResponse(data)
