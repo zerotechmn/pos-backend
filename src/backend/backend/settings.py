@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'oauth2_provider',
-    'base',
+
     'backend.base',
 ]
 
@@ -181,4 +181,3 @@ LOYALTY_URL = "https://lms.shunkhlai.mn"
 MERCHANT_URL = "http://info.ebarimt.mn"
 GUUR_URL = "http://testsvr.shunkhlai.mn:8073"
 VERSION_URL = "http://192.168.1.165:9000/update_info.json"
-
