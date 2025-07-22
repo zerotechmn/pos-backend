@@ -28,13 +28,13 @@ urlpatterns = [
 
     path('ping/', ping),
     path('admin/', admin.site.urls),
-    path('guur/auth/token/', guurAuthToken),
-    path('guur/get_product_line/', guurGetProductLine),
-    path('guur/get_warehouse/', guurGetWareHouse),
-    path('guur/get_pump/', guurGetPump),
-    path('guur/get_product/', guurGetProduct),
+    path('guur/auth/token/', GuurAuthTokenView.as_view()),
+    path('guur/get_product_line/', GuurGetProductLineView.as_view()),
+    path('guur/get_warehouse/', GuurGetWareHouseView.as_view()),
+    path('guur/get_pump/', GuurGetPumpView.as_view()),
+    path('guur/get_product/', GuurGetProductView.as_view()),
 
-    path("ebarimt/merchant_tin/", ebarimtMerchantTin),
-    path("ebarimt/get_receipt/", eBarimtReceiptransaction),
+    path("ebarimt/merchant_tin/", EbarimtMerchantTinView.as_view()),
+    path("ebarimt/get_receipt/", EBarimtReceiptransactionView.as_view()),
     path('update_info.json', update_info),
 ]
