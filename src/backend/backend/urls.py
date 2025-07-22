@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from backend.views import *
 from backend.middleware.guur import *
+from backend.middleware.vatps import *
 from oauth2_provider import views
 
 urlpatterns = [
@@ -28,7 +29,12 @@ urlpatterns = [
     path('ping/', ping),
     path('admin/', admin.site.urls),
     path('guur/auth/token/', guurAuthToken),
+    path('guur/get_product_line/', guurGetProductLine),
+    path('guur/get_warehouse/', guurGetWareHouse),
+    path('guur/get_pump/', guurGetPump),
+    path('guur/get_product/', guurGetProduct),
 
-    path("merchant_tin/", ebarimtMerchantTin),
+    path("ebarimt/merchant_tin/", ebarimtMerchantTin),
+    path("ebarimt/get_receipt/", eBarimtReceiptransaction),
     path('update_info.json', update_info),
 ]
