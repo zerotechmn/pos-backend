@@ -38,9 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
-    'front.views',
-    'front.login',
+
+    'front'
 ]
 
 MIDDLEWARE = [
@@ -55,17 +54,31 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'front.urls'
 
+LOGIN_URL = "/login/"
+
+LOGIN_REDIRECT_URL = '/'
+
+ROOT_URLCONF = 'front.urls'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, "design", "templates"),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.debug',
                 'django.template.context_processors.request',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries': {
+                'ticket_tags': 'front.templatetags.ticket_tags',
+            },
         },
     },
 ]
@@ -82,12 +95,12 @@ DATABASES = {
         'OPTIONS': {
             'options': '-c search_path=django,public',
         },
-        'NAME': "zerotech",
-        'USER': "zerotech",
-        'PASSWORD': "postgres",
-        'HOST': "localhost",
-        'CONN_MAX_AGE': 60,
-        'PORT': 5432
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DB_NAME', 'zerotech_front'),
+        'USER': os.environ.get('DB_USER', 'zerotech'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', 'postgres'),
+        'HOST': os.environ.get('DB_HOST', '192.168.1.38'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
 

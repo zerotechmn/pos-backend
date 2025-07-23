@@ -96,17 +96,9 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
     ),
 }
-# REST_FRAMEWORK = {
-#     'DEFAULT_AUTHENTICATION_CLASSES': [
-#         'rest_framework.authentication.TokenAuthentication',
-#     ]
-# }
-
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -117,7 +109,7 @@ DATABASES = {
         'NAME': os.environ.get('DB_NAME', 'zerotech'),
         'USER': os.environ.get('DB_USER', 'zerotech'),
         'PASSWORD': os.environ.get('DB_PASSWORD', 'postgres'),
-        'HOST': os.environ.get('DB_HOST', 'localhost'),
+        'HOST': os.environ.get('DB_HOST', '192.168.1.38'),
         'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
@@ -180,3 +172,10 @@ LOYALTY_URL = "https://lms.shunkhlai.mn"
 MERCHANT_URL = "http://info.ebarimt.mn"
 GUUR_URL = "http://testsvr.shunkhlai.mn:8073"
 VERSION_URL = "http://192.168.1.165:9000/update_info.json"
+
+# Discord Server URL
+DISCORD_EBARIMT_CHANNEL_URL = ""
+DISCORD_SET_TERMINAL_CHANNEL_URL = ""
+
+# Teams Server URL
+TEAMS_CHANNEL_URL = ""

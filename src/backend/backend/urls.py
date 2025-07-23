@@ -19,6 +19,7 @@ from django.urls import path
 from backend.views import *
 from backend.middleware.guur import *
 from backend.middleware.vatps import *
+from backend.terminal.terminal import *
 from oauth2_provider import views
 
 urlpatterns = [
@@ -28,6 +29,8 @@ urlpatterns = [
 
     path('ping/', ping),
     path('admin/', admin.site.urls),
+    path('terminal/set_terminal/', SetTerminalView.as_view(), ),
+
     path('guur/auth/token/', GuurAuthTokenView.as_view()),
     path('guur/get_product_line/', GuurGetProductLineView.as_view()),
     path('guur/get_warehouse/', GuurGetWareHouseView.as_view()),

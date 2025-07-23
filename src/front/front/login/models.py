@@ -5,24 +5,6 @@ from django.conf import settings
 from django.core.cache import cache
 from django.contrib.auth import signals
 
-
-class BaazSession(models.Model):
-    session_key = models.CharField(max_length=1024)
-    session_data = models.TextField()
-    expire_date = models.DateTimeField()
-    company_key = models.TextField(null=True, blank=True)
-    session_created = models.DateTimeField(auto_now_add=True)
-    session_age = models.IntegerField(u"Session НАС", default=0)
-    username = models.CharField(max_length=1024, null=True, blank=True)
-    usertoken = models.CharField(max_length=1024, null=True, blank=True)
-    usercode = models.CharField(max_length=1024, null=True, blank=True)
-    access_data = models.TextField(null=True, blank=True)
-
-    class Meta:
-        verbose_name = "BAAZ Session"
-        verbose_name_plural = "BAAZ Session"
-
-
 class ApiTokensManager(models.Manager):
 
     def safe_tokens(self):

@@ -36,6 +36,27 @@ def getMerchantTin(regno):
     response = requests.get(url, headers=headers, data=data)
     print("valid response ", response.json())
     data = response.json()
+    send_discord_alert(
+            channel_url=settings.DISCORD_EBARIMT_CHANNEL_URL,
+            msg=data
+        )
     if data.get("status") == 200:
         return data.get('data')
     return None
+
+
+def send_discord_alert(channel_url, msg):
+    data = {'content': msg}
+    try:
+        res = requests.post(
+            url=channel_url,
+            headers={
+                'Content-type': 'application/json',
+                'User-Agent': 'ZeroTech POS-Backend'
+            },
+            json=data
+        )
+        if res.status_code not in range(200, 299):
+            return
+    except:
+        return False

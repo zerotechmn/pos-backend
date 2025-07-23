@@ -3,7 +3,7 @@ from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.forms import ModelForm
 from django.contrib.auth import authenticate
-from login.models import Shortcut
+from front.login.models import Shortcut
 
 
 class LoginForm(AuthenticationForm):

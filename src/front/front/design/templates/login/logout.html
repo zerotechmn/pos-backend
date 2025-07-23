@@ -1,0 +1,26 @@
+{% extends "master_front.html" %}
+
+{% block title %}
+Нэвтрэх
+{% endblock title %}
+
+{% block body_class %}
+login
+{% endblock body_class %}
+
+{% block css %}
+{{block.super}}
+<link href="{{STATIC_URL}}base/css/login.css" rel="stylesheet" type="text/css"/>
+{% endblock css %}
+{% block content %}
+<div class="user-login">
+    <div class="row bs-reset">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 login-container bs-reset mt-login-5-bsfix">
+            <div class="login-content">
+                <h1>Системээс гарлаа</h1>
+                <a href="{% url 'login' %}" class="btn">Дахин нэвтрэх</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
