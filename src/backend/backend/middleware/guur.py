@@ -111,3 +111,24 @@ class GuurGetProductView(APIView):
         response = requests.get(url, headers=headers, params=params)
 
         return Response(response.json())
+    
+class GuurSendTransactionView(APIView):
+    authentication_classes = []
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        serializer = GuurProductSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+
+        token = getToken()
+        headers = {
+            "Access-token": token.get("access_token")
+        }
+        params = {
+            "query": f'[["shts_code", "=", "{data.get("shts_code")}"]]'
+        }
+        url = settings.GUUR_URL + "/api/product.product"
+        response = requests.get(url, headers=headers, params=params)
+
+        return Response(response.json())

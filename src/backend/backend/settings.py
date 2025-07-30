@@ -156,6 +156,10 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+MONGODB_LOG = 'mongo_log'
+MONGODB_HOST_LOG = "172.17.47.6"
+MONGODB_HOST_LOG_PASSWORD = "mongotest"
+MONGODB_HOST_LOG_USERNAME = "mongotest"
 
 INSTALLED_APPS += ['corsheaders']
 MIDDLEWARE = ['corsheaders.middleware.CorsMiddleware'] + MIDDLEWARE
@@ -175,7 +179,8 @@ VERSION_URL = "http://192.168.1.165:9000/update_info.json"
 
 # Discord Server URL
 DISCORD_EBARIMT_CHANNEL_URL = ""
-DISCORD_SET_TERMINAL_CHANNEL_URL = ""
+DISCORD_GUUR_CHANNEL_URL = "https://discord.com/api/webhooks/1399683461077532724/q8RUoW9pbDuiLWo_GiWVtCSXVji4tbT7TDkr3XT5OwpHvc9gabOaD5BsZ6S3EXB4k8WX"
+DISCORD_SET_TERMINAL_CHANNEL_URL = "https://discord.com/api/webhooks/1399217538302480464/76-fQd2rvV-kP9RseqsOSfzWWviXqejAL3mtpH742VrgwpOw6JmPiRn_xfu3dcfjgqZS"
 
 # Teams Server URL
 TEAMS_CHANNEL_URL = ""

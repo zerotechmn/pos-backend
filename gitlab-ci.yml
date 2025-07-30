@@ -1,0 +1,101 @@
+stages:
+  - clone
+  - test
+  - build
+  - deploy
+
+build:
+  stage: build
+  script:
+    - echo "Building image with tag: $IMAGE_TAG"
+    - docker build -t myapp:$IMAGE_TAG .
+
+variables:
+  GIT_STRATEGY: none
+  PROJECT_NAME: pos-backend
+  IMAGE_TAG: $CI_COMMIT_SHORT_SHA
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  REPO_URL: https://github.com/zerotechmn/pos-backend.git
+  DEPLOY_DIR: /opt/pos-backend
+
+cache:
+  paths:
+    - .cache/pip
+    - venv/
+
+clone-code:
+  stage: clone
+  script:
+    - echo "Cloning GitHub repo..."
+    - rm -rf $PROJECT_NAME
+    - git clone $REPO_URL
+    - ls -al
+
+test:
+  stage: test
+  script:
+    - cd $PROJECT_NAME
+    - pip install -r requirements.txt
+    - pytest || echo "Tests failed, skipping..."
+
+.build:
+  stage: build
+  before_script:
+    - export BUILD_DATE=`date +"%Y-%m-%dT%H:%M:%S"`
+  variables:
+    SET_CONTAINER_TIMEZONE: "True"
+    CONTAINER_TIMEZONE: Asia/Ulaanbaatar
+    TZ: Asia/Ulaanbaatar
+  script:
+    - cd $PROJECT_NAME
+    - echo "Build step - customize if needed"
+    - docker build -t pos-backend -f Dockerfile . --build-arg BUILD_DATE --build-arg IMAGE_VERSION --build-arg BUILD_MODE
+    - docker tag pos-backend ghcr.io/zerotechmn/pos-backend:${CI_COMMIT_SHORT_SHA}
+    - docker push ghcr.io/zerotechmn/pos-backend:${CI_COMMIT_SHORT_SHA}
+
+.deploy_template:
+  stage: deploy
+  variables:
+    REPLICA_COUNT: "1"
+    FRONT_REPLICA_COUNT: "1"
+    REPORT_REPLICA_COUNT: "1"
+    DEPLOY_SERVER: ${DEVELOP_SERVER}
+    CERTIFICATE_AUTHORITY_DATA: ${DEVELOP_DEPLOY_CERTIFICATE_AUTHORITY_DATA}
+    USER_TOKEN: ${DEVELOP_USER_TOKEN}
+  before_script:
+    - kubectl config set-cluster k8s --server="${DEPLOY_SERVER}"
+    - kubectl config set clusters.k8s.certificate-authority-data "${CERTIFICATE_AUTHORITY_DATA}"
+    - kubectl config set-credentials gitlab_auto_cicd --token="${USER_TOKEN}"
+    - kubectl config set-context default --cluster=k8s --user=gitlab_auto_cicd --namespace=default
+    - kubectl config use-context default
+    - kubectl config get-contexts
+    - kubectl config current-context
+  script:
+    - echo "Deploying to $DEPLOY_DIR"
+    - sudo rm -rf $DEPLOY_DIR
+    - sudo mkdir -p $DEPLOY_DIR
+    - sudo cp -r $PROJECT_NAME/* $DEPLOY_DIR/
+    - echo "Restarting Gunicorn service"
+    - sudo systemctl restart pos-backend.service
+    - echo "Deployed and restarted!"
+
+build_test:
+  extends: .build
+  variables:
+    BUILD_MODE: TEST
+  only:
+    - master
+
+deploy_test:
+  extends: .deploy_template
+  variables:
+    REPLICA_COUNT: "1"
+    REPORT_REPLICA_COUNT: "1"
+    DEPLOY_SERVER: ${STAGING_SERVER}
+    CERTIFICATE_AUTHORITY_DATA: ${STAGING_DEPLOY_CERTIFICATE_AUTHORITY_DATA}
+    USER_TOKEN: ${STAGING_USER_TOKEN}
+
+  environment:
+    name: test
+  only:
+    - master

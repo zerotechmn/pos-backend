@@ -1,4 +1,6 @@
 import requests
+import socket
+from requests import get
 from django.conf import *
 from backend.base.models import User
 
@@ -60,3 +62,17 @@ def send_discord_alert(channel_url, msg):
             return
     except:
         return False
+
+def get_address():
+    remote_address=None
+    ip = get('https://api.ipify.org').text
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.settimeout(0)
+    try:
+        s.connect((ip, 1))
+        IP = s.getsockname()[0]
+    except Exception:
+        IP = remote_address
+    finally:
+        s.close()
+    return IP

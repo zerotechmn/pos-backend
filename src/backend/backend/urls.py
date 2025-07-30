@@ -36,6 +36,7 @@ urlpatterns = [
     path('guur/get_warehouse/', GuurGetWareHouseView.as_view()),
     path('guur/get_pump/', GuurGetPumpView.as_view()),
     path('guur/get_product/', GuurGetProductView.as_view()),
+    path('guur/send_transaction/', GuurSendTransactionView.as_view()),
 
     path("ebarimt/merchant_tin/", EbarimtMerchantTinView.as_view()),
     path("ebarimt/get_receipt/", EBarimtReceiptransactionView.as_view()),

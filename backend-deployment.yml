@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: pos
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: pos-backend
+          image: ghcr.io/zerotechmn/pos-backend:latest
+          ports:
+            - containerPort: 8000
+          readinessProbe:
+            httpGet:
+              scheme: HTTP
+              path: /ping
+              port: 8000
+            initialDelaySeconds: 30
+            timeoutSeconds: 10
+            periodSeconds: 60
+          livenessProbe:
+            httpGet:
+              scheme: HTTP
+              path: /ping
+              port: 8000
+            initialDelaySeconds: 30
+            timeoutSeconds: 10
+            periodSeconds: 60
+          envFrom:
+            - configMapRef:
+                name: backend-config
+            - secretRef:
+                name: backend-secret
+          command: ["gunicorn"]
+          args: ["backend.prod_wsgi:application"]
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pos-backend-service
+spec:
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
+  type: ClusterIP
