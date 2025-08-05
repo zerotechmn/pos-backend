@@ -19,6 +19,7 @@ from django.urls import path
 from backend.views import *
 from backend.middleware.guur import *
 from backend.middleware.vatps import *
+from backend.middleware.lms import *
 from backend.terminal.terminal import *
 from oauth2_provider import views
 
@@ -31,6 +32,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('terminal/set_terminal/', SetTerminalView.as_view(), ),
 
+    ## GUUR
     path('guur/auth/token/', GuurAuthTokenView.as_view()),
     path('guur/get_product_line/', GuurGetProductLineView.as_view()),
     path('guur/get_warehouse/', GuurGetWareHouseView.as_view()),
@@ -38,6 +40,11 @@ urlpatterns = [
     path('guur/get_product/', GuurGetProductView.as_view()),
     path('guur/send_transaction/', GuurSendTransactionView.as_view()),
 
+    ## LMS
+    path('lms/register/', LMLAuthRegister.as_view()),
+    path('lms/check_status/', LMLCheckStatus.as_view()),
+
+    ## Ebarimt
     path("ebarimt/merchant_tin/", EbarimtMerchantTinView.as_view()),
     path("ebarimt/get_receipt/", EBarimtReceiptransactionView.as_view()),
     path('update_info.json', update_info),

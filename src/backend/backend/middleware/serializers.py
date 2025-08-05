@@ -99,3 +99,11 @@ class GuurTransactionSerializer():
     sales_product_ids = SalesProductIdsItemSerializer(many=True)
     ddtd = serializers.CharField(max_length=100, allow_blank=True, required=False)
     noat_amount = serializers.FloatField()
+
+
+# LML Serializers
+class LMSAuthTokenSerializer(serializers.Serializer):
+    posCode = serializers.CharField(max_length=100, allow_blank=True, required=True)
+    branchCode = serializers.CharField(max_length=100, allow_blank=True, required=True)
+    merchantTtd = serializers.CharField(max_length=100, allow_blank=True, required=False)
+    name = serializers.CharField(max_length=100, allow_blank=True, required=False)

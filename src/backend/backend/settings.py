@@ -109,7 +109,7 @@ DATABASES = {
         'NAME': os.environ.get('DB_NAME', 'zerotech'),
         'USER': os.environ.get('DB_USER', 'zerotech'),
         'PASSWORD': os.environ.get('DB_PASSWORD', 'postgres'),
-        'HOST': os.environ.get('DB_HOST', '192.168.1.38'),
+        'HOST': os.environ.get('DB_HOST', 'localhost'),
         'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
@@ -172,7 +172,7 @@ B2C_URL = os.environ.get("B2C_URL", "https://orange-api.shunkhlai.mn")
 EBARIMT_30_URL = os.environ.get("EBARIMT_30_URL", "http://103.168.179.44:3000")
 EBARIMT_TOKEN = os.environ.get("EBARIMT_TOKEN", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlNzkxMjNjOS02MjU3LTQ2OTEtOWVmOS04MDE2MTExNGYzOTYiLCJuYW1lIjoiT25saW5lIFBPUyIsImF1ZCI6InBvcyIsImlhdCI6MTc0NTMwOTAwOCwiZXhwIjoyNzQ1MzEyNjA4fQ.OcrZMlAR1DdJXjfuFTF89mM0VUBBOKGFd9_wL-1UQIw")
 EBARIMT_URL = os.environ.get("EBARIMT_URL", "http://oes.shunkhlai.mn:8011")
-LOYALTY_URL = os.environ.get("LOYALTY_URL", "https://lms.shunkhlai.mn")
+LOYALTY_URL = os.environ.get("LOYALTY_URL", "https://lms.shunkhlai.mn/rule-engine")
 MERCHANT_URL = os.environ.get("MERCHANT_URL", "http://info.ebarimt.mn")
 GUUR_URL = os.environ.get("GUUR_URL", "http://testsvr.shunkhlai.mn:8073")
 VERSION_URL = os.environ.get("VERSION_URL", "http://192.168.1.165:9000/update_info.json")

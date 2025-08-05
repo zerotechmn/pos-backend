@@ -3,6 +3,7 @@ import requests
 import datetime
 import logging
 import decimal
+import copy
 from django.conf import settings
 from django.core.serializers.json import DjangoJSONEncoder
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
@@ -65,7 +66,7 @@ class EBarimtReceiptransactionView(APIView):
             "Content-Type": "text/plain",
         }
         if self.terminal.guur_token not in [None, '']:
-            "Access-token": self.terminal.guur_token
+            headers["Access-token"] = self.terminal.guur_token
 
         # shts_code = data.get("shts_code")
         # pos_num = data.get("pos_num")
@@ -126,24 +127,20 @@ class EBarimtReceiptransactionView(APIView):
         except requests.exceptions.RequestException as exception:
             send_discord_alert(
                 channel_url=settings.DISCORD_RBP_ALERT_CHANNEL_URL,
-                msg="GUUR CONNECTION FAIL. ACTION: %r, RBP: %s, TERMINAL: %r, EXC: %r" % (
-                    "REMOTE_POS_COMPLETE_TRANSACTION",
-                    "" if remote_backend_provider is None else remote_backend_provider.__unicode__(),
-                    terminal.id_bank,
+                msg="GUUR CONNECTION FAIL. ACTION: %r, TERMINAL: %r, EXC: %r" % (
+                    "POS_SYNC_GUUR_TRANSACTION",
+                    self.terminal.terminal_pos_no,
                     exception
                 )
             )
 
-            # logger.error(
-            #     'REMOTE_POS_COMPLETE_TRANSACTION Terminal-ID: %r, Request-Actions: %r, RBP: %r, Exception: %r, Request-Date: %r, Request-Data: %r' % (
-            #         terminal.id_bank,
-            #         request_log.request_action,
-            #         remote_backend_provider,
-            #         request_log.exception,
-            #         request_log.request_date,
-            #         client_request_data
-            #     )
-            # )
+            logger.error(
+                msg="GUUR CONNECTION FAIL. ACTION: %r, TERMINAL: %r, EXC: %r" % (
+                    "POS_SYNC_GUUR_TRANSACTION",
+                    self.terminal.terminal_pos_no,
+                    exception
+                )
+            )
 
             response_date = datetime.datetime.now()
             request_log.response_date = response_date
@@ -166,10 +163,9 @@ class EBarimtReceiptransactionView(APIView):
 
             send_discord_alert(
                 channel_url=settings.DISCORD_RBP_ALERT_CHANNEL_URL,
-                msg="RBP REQUEST BAD STATUS FAIL. ACTION: %r, RBP: %s, TERMINAL: %r, STATUS CODE: %r" % (
-                    "REMOTE_BACKEND_PROVIDER_COMPLETE_TRANSACTION",
-                    "" if remote_backend_provider is None else remote_backend_provider.__unicode__(),
-                    terminal.id_bank,
+                msg="GUUR REQUEST BAD STATUS FAIL. ACTION: %r, TERMINAL: %r, STATUS CODE: %r" % (
+                    "POS_SYNC_GUUR_TRANSACTION",
+                    self.terminal.terminal_pos_no,
                     response.status_code
                 )
             )
@@ -180,8 +176,7 @@ class EBarimtReceiptransactionView(APIView):
 
         # Mask
         response_data = response.json()
-        log_response_data = copy.deepcopy(response_data)
-        log_data = get_log_data(log_response_data, terminal)
+        log_data = copy.deepcopy(response_data)
 
         response_date = datetime.datetime.now()
         request_log.response_date = response_date
@@ -191,38 +186,4 @@ class EBarimtReceiptransactionView(APIView):
         request_log.duration = str((response_date - request_date).total_seconds())
         request_log.response_status_code = response_data.get('status_code', 'ng')
         request_log.save()
-
-        if payment is not None:
-            # save remote payment
-            TWO_PLACES = decimal.Decimal(10) ** -2
-            amount = float(decimal.Decimal(transaction.get("total", "0")).quantize(TWO_PLACES))
-
-            card_amount = 0
-            cash_amount = 0
-            other_amount = 0
-            for payment_line in transaction.get("payment_lines", []):
-                if payment_line.get("payment_service", "") == "CASH":
-                    cash_amount += decimal.Decimal(payment_line.get("pay_amount", 0))
-                elif payment_line.get("payment_service", "") == "CARD":
-                    card_amount += decimal.Decimal(payment_line.get("pay_amount", 0))
-                else:
-                    other_amount += decimal.Decimal(payment_line.get("pay_amount", 0))
-
-            payment = RemotePayment.objects.create(
-                remote_backend_provider_id=str(remote_backend_provider.pk),
-                remote_backend_provider_name=remote_backend_provider.name,
-                terminal_id=str(terminal.pk),
-                terminal_id_bank=str(terminal.id_bank),
-                terminal_name=str(terminal.name),
-                terminal_is_test=terminal.is_test,
-                merchant_id=str(terminal.merchant.pk),
-                merchant_name=str(terminal.merchant.name_format),
-                action='sync_transaction',
-                amount=decimal.Decimal(amount),
-                card_amount=decimal.Decimal(card_amount),
-                cash_amount=decimal.Decimal(cash_amount),
-                other_amount=decimal.Decimal(other_amount),
-                created_date=request_date
-            )
-
         return response_data
