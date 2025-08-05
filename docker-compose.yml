@@ -18,6 +18,8 @@ services:
       - DB_PASSWORD=postgres
       - DB_HOST=db
       - DB_PORT=5432
+      - DISCORD_GUUR_CHANNEL_URL=https://discord.com/api/webhooks/1399683461077532724/q8RUoW9pbDuiLWo_GiWVtCSXVji4tbT7TDkr3XT5OwpHvc9gabOaD5BsZ6S3EXB4k8WX
+      - DISCORD_SET_TERMINAL_CHANNEL_URL=https://discord.com/api/webhooks/1399217538302480464/76-fQd2rvV-kP9RseqsOSfzWWviXqejAL3mtpH742VrgwpOw6JmPiRn_xfu3dcfjgqZS
   db:
     image: postgres:15
     container_name: django_db
@@ -27,6 +29,13 @@ services:
       POSTGRES_DB: zerotech
       POSTGRES_USER: zerotech
       POSTGRES_PASSWORD: postgres
+  
+  mongodb:
+    image: mongo:4.4.18
+    container_name: mongo
+    restart: unless-stopped
+    volumes:
+      - mongodata:/data/db
   
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.9.0
@@ -39,7 +48,26 @@ services:
       - "9200:9200"
     volumes:
       - esdata:/usr/share/elasticsearch/data
+  
+  graylog:
+    image: turbo/graylog:5.2-arm64
+    container_name: graylog
+    depends_on:
+      - mongodb
+      - elasticsearch
+    environment:
+      - GRAYLOG_PASSWORD_SECRET=some-secret-password
+      - GRAYLOG_ROOT_PASSWORD_SHA2=2bb80d537b1da3e38bd30361aa855686bde0ba6e5c1968b00729f3e62f7b98f8
+      - GRAYLOG_HTTP_EXTERNAL_URI=http://localhost:9000/
+    ports:
+      - "9000:9000"
+      - "12201:12201/udp"
+    volumes:
+      - graylog_data:/usr/share/graylog/data
+
 
 volumes:
   postgres_data:
   esdata:
+  mongodata:
+  graylog_data:
